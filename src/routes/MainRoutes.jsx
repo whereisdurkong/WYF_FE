@@ -19,6 +19,7 @@ const AddProduct = lazy(() => import('../views/admin/add-product'));
 const AdminAllProduct = lazy(() => import('../views/admin/admin-product'));
 const AdminProductView = lazy(() => import('../views/admin/admin-product-view'))
 
+const AdminSetup = lazy(() => import('../views/admin/admin-setup'));
 const AddSetup = lazy(() => import('../views/admin/add-setup'));
 
 const AddCollection = lazy(() => import('../views/admin/add-collection'))
@@ -107,6 +108,10 @@ const MainRoutes = {
         {
             path: '/admin-add-setup',
             element: withAuth(<AddSetup />)
+        },
+        {
+            path: '/admin-setup',
+            element: withAuth(<AdminSetup />)
         },
         {
             path: '/collection',
