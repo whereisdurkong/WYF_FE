@@ -100,7 +100,9 @@ export default function ShopSetupProduct() {
         const fetch = async () => {
             try {
                 const res = await axios.get(`${config.baseApi}/product/get-all-setup`);
-                const data = res.data?.[0] || null;
+                const data = res.data[0] || null;
+
+                console.log("Fetched product setup images:", data);
                 setSetupData(data);
             } catch (err) {
                 console.log("Unable to fetch product setup images");

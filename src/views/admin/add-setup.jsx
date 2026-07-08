@@ -23,43 +23,66 @@ const categories = [
     { key: "footwear", label: "Footwear", tag: "FOOTWEAR" },
 ];
 
+// ── Icons ───────────────────────────────────────────────────────────
+
+const UploadIcon = () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 16V4M12 4L7 9M12 4l5 5" />
+        <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+    </svg>
+);
+
+const CheckIcon = () => (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 6 9 17l-5-5" />
+    </svg>
+);
+
 // ── Styles ──────────────────────────────────────────────────────────
 
 const STYLES = `
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     .as-root {
         min-height: 100vh;
         background: #f5f5f5;
         color: #0a0a0a;
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         padding: 28px 24px;
         margin-top: 100px;
     }
 
-    .as-inner {
-        max-width: 1160px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
+  .as-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+    /* Page header */
+    .as-eyebrow {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #aaa;
+        margin-bottom: 6px;
     }
 
-    /* Page header */
     .as-page-header {
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
         padding-bottom: 20px;
         border-bottom: 2px solid #0a0a0a;
-        margin-bottom: 24px;
+        margin-bottom: 28px;
     }
 
     .as-page-title {
-        font-size: 22px;
-        font-weight: 700;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 24px;
+        font-weight: 800;
         letter-spacing: -0.5px;
+        text-transform: uppercase;
         color: #0a0a0a;
         line-height: 1;
     }
@@ -68,16 +91,52 @@ const STYLES = `
         font-size: 12px;
         color: #888;
         font-weight: 400;
-        margin-top: 6px;
-        letter-spacing: 0.01em;
+        margin-top: 8px;
+        letter-spacing: 0.04em;
+    }
+
+    .as-progress-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+    }
+
+    .as-progress-count {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: #555;
+    }
+
+    .as-progress-count b {
+        color: #0a0a0a;
+        font-weight: 800;
+    }
+
+    .as-progress-dots {
+        display: flex;
+        gap: 6px;
+    }
+
+    .as-progress-dot {
+        width: 22px;
+        height: 4px;
+        background: #e0e0e0;
+        transition: background 0.25s ease;
+    }
+
+    .as-progress-dot.filled {
+        background: #0a0a0a;
     }
 
     /* Card */
     .as-card {
         background: #fff;
         border: 1px solid #e0e0e0;
-        border-top: 3px solid #0a0a0a;
-        padding: 28px;
+        // border-top: 3px solid #0a0a0a;
+        padding: 32px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
     .as-card-header {
@@ -105,19 +164,18 @@ const STYLES = `
     .as-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
+        gap: 18px;
     }
 
     /* Upload tile */
     .as-tile {
         display: flex;
         flex-direction: column;
-        gap: 0;
     }
 
     .as-tile-drop {
-        border: 1.5px solid #e0e0e0;
-        height: 200px;
+        border: 1.5px dashed #d5d5d5;
+        height: 260px;
         cursor: pointer;
         background: #fafafa;
         display: flex;
@@ -125,27 +183,35 @@ const STYLES = `
         justify-content: center;
         position: relative;
         overflow: hidden;
-        transition: border-color 0.15s, background 0.15s;
+        transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
     }
 
     .as-tile-drop:hover {
         border-color: #0a0a0a;
-        background: #f5f5f5;
+        background: #f2f2f2;
+        transform: translateY(-2px);
     }
 
     .as-tile-drop.dragging {
         border-color: #0a0a0a;
         border-style: solid;
-        background: #f0f0f0;
+        background: #eee;
+        transform: scale(1.01);
     }
 
     .as-tile-drop.has-error {
         border-color: #c0392b;
+        border-style: solid;
+        background: #fdf3f2;
     }
 
     .as-tile-drop.has-preview {
         cursor: default;
-        border-color: #0a0a0a;
+        border: none;
+    }
+
+    .as-tile-drop.has-preview:hover {
+        transform: none;
     }
 
     .as-tile-preview {
@@ -153,19 +219,33 @@ const STYLES = `
         height: 100%;
         object-fit: cover;
         display: block;
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .as-tile-drop.has-preview:hover .as-tile-preview {
+        transform: scale(1.05);
+    }
+
+    .as-tile-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 45%, transparent 65%);
+        pointer-events: none;
     }
 
     .as-tile-remove {
         position: absolute;
-        top: 8px;
-        right: 8px;
-        background: #0a0a0a;
+        top: 10px;
+        right: 10px;
+        background: rgba(10,10,10,0.6);
+        backdrop-filter: blur(3px);
         color: #fff;
         border: none;
         width: 26px;
         height: 26px;
+        border-radius: 50%;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 15px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -174,7 +254,37 @@ const STYLES = `
     }
 
     .as-tile-remove:hover {
-        background: #333;
+        background: #c0392b;
+    }
+
+    .as-tile-overlay-label {
+        position: absolute;
+        left: 14px;
+        bottom: 12px;
+        right: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .as-tile-overlay-name {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+
+    .as-tile-ready {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #3ecf6a;
+        color: #fff;
     }
 
     .as-tile-empty {
@@ -183,17 +293,34 @@ const STYLES = `
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         padding: 16px;
+    }
+
+    .as-tile-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .as-tile-drop:hover .as-tile-icon {
+        color: #0a0a0a;
+        border-color: #0a0a0a;
     }
 
     .as-tile-tag {
         font-size: 9px;
         font-weight: 700;
         letter-spacing: 0.14em;
-        color: #0a0a0a;
-        background: #0a0a0a;
         color: #fff;
+        background: #0a0a0a;
         padding: 3px 8px;
         display: inline-block;
     }
@@ -217,28 +344,12 @@ const STYLES = `
         letter-spacing: 0.02em;
     }
 
-    /* Tile footer */
-    .as-tile-footer {
-        background: #0a0a0a;
-        padding: 8px 12px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .as-tile-name {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #fff;
-    }
-
     .as-tile-error {
         font-size: 10px;
         color: #c0392b;
-        padding: 6px 0 2px;
+        padding: 8px 2px 0;
         letter-spacing: 0.01em;
+        font-weight: 500;
     }
 
     /* Actions row */
@@ -247,7 +358,7 @@ const STYLES = `
         align-items: center;
         justify-content: flex-end;
         gap: 12px;
-        margin-top: 24px;
+        margin-top: 28px;
         padding-top: 20px;
         border-top: 1px solid #e0e0e0;
     }
@@ -262,14 +373,14 @@ const STYLES = `
         background: #0a0a0a;
         color: #fff;
         border: 1.5px solid #0a0a0a;
-        padding: 10px 28px;
+        padding: 11px 30px;
         font-size: 12px;
         font-weight: 600;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         cursor: pointer;
         font-family: inherit;
-        transition: background 0.15s, color 0.15s;
+        transition: background 0.15s, color 0.15s, transform 0.15s;
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -280,6 +391,10 @@ const STYLES = `
         color: #0a0a0a;
     }
 
+    .as-save-btn:active:not(:disabled) {
+        transform: scale(0.97);
+    }
+
     .as-save-btn:disabled {
         opacity: 0.4;
         cursor: not-allowed;
@@ -287,7 +402,7 @@ const STYLES = `
 
     /* Preview section */
     .as-preview-section {
-        margin-top: 32px;
+        margin-top: 36px;
     }
 
     .as-preview-header {
@@ -331,6 +446,26 @@ const STYLES = `
     .as-toast-wrap > div {
         pointer-events: auto;
     }
+
+    @media (max-width: 900px) {
+        .as-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 560px) {
+        .as-page-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .as-progress-wrap {
+            align-items: flex-start;
+        }
+        .as-grid {
+            grid-template-columns: 1fr;
+        }
+    }
 `;
 
 // ── Sub-components ──────────────────────────────────────────────────
@@ -364,16 +499,22 @@ function ImageUploadCard({ label, tag, preview, error, onFileChange, onRemove })
                 {preview ? (
                     <>
                         <img className="as-tile-preview" src={preview} alt={label} />
+                        <div className="as-tile-overlay" />
                         <button
                             type="button"
                             className="as-tile-remove"
                             onClick={e => { e.stopPropagation(); onRemove(); }}
                             title={`Remove ${label}`}
                         >×</button>
+                        <div className="as-tile-overlay-label">
+                            <span className="as-tile-overlay-name">{label}</span>
+                            <span className="as-tile-ready"><CheckIcon /></span>
+                        </div>
                     </>
                 ) : (
                     <div className="as-tile-empty">
                         <span className="as-tile-tag">{tag}</span>
+                        <div className="as-tile-icon"><UploadIcon /></div>
                         <div className="as-tile-hint">
                             Drop image or{" "}
                             <span onClick={e => { e.stopPropagation(); inputRef.current?.click(); }}>
@@ -382,13 +523,6 @@ function ImageUploadCard({ label, tag, preview, error, onFileChange, onRemove })
                         </div>
                         <div className="as-tile-meta">JPG · PNG · WebP — {MAX_FILE_SIZE_MB}MB max</div>
                     </div>
-                )}
-            </div>
-
-            <div className="as-tile-footer">
-                <span className="as-tile-name">{label}</span>
-                {preview && (
-                    <span style={{ fontSize: 10, color: "#666", letterSpacing: "0.04em" }}>✓ Ready</span>
                 )}
             </div>
 
@@ -528,11 +662,19 @@ export default function AddSetup() {
                 {/* Page header */}
                 <div className="as-page-header">
                     <div>
+                        <div className="as-eyebrow">Shop Configuration</div>
                         <div className="as-page-title">Shop Setup</div>
                         <div className="as-page-subtitle">Upload one image per clothing category</div>
                     </div>
-                    <div style={{ fontSize: 11, color: "#888", fontWeight: 500 }}>
-                        {uploadedCount} / {categories.length} uploaded
+                    <div className="as-progress-wrap">
+                        <span className="as-progress-count">
+                            <b>{uploadedCount}</b> / {categories.length} uploaded
+                        </span>
+                        <div className="as-progress-dots">
+                            {categories.map(({ key }) => (
+                                <div key={key} className={`as-progress-dot${previews[key] ? " filled" : ""}`} />
+                            ))}
+                        </div>
                     </div>
                 </div>
 

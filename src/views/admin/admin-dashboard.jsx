@@ -4,31 +4,51 @@ import config from "../../config";
 
 import { Toast } from "../../components/Notification";
 import Loading from "../../components/Loading";
+import FeatherIcon from "feather-icons-react";
 
 const baseUrl = config.baseApi.replace("/api", "");
 
 const styles = {
     root: {
         minHeight: "100vh",
-        background: "#FAFAFA",
-        fontFamily: "-apple-system, 'Inter', BlinkMacSystemFont, sans-serif",
-        padding: "0 0 4rem 0",
+        background: "#f5f5f5",
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+        padding: "100px 0 0 0",
     },
     header: {
-        position: "sticky",
-        top: 0,
-        zIndex: 10,
-        background: "rgba(250,250,250,0.9)",
-        backdropFilter: "blur(10px)",
-        borderBottom: "1px solid #E8E8E8",
-        padding: "1rem 1.5rem",
         display: "flex",
-        alignItems: "center",
+        alignItems: "flex-end",
         justifyContent: "space-between",
+
+        borderBottom: "2px solid #0a0a0a",
+
+        marginTop: "0",
     },
-    headerTitle: { fontSize: 14, fontWeight: 600, color: "#0F0F0F", letterSpacing: "-0.01em", margin: 0 },
-    headerBadge: { fontSize: 11, fontWeight: 500, color: "#6B6B6B", background: "#F0F0F0", borderRadius: 20, padding: "2px 8px", letterSpacing: "0.02em" },
-    body: { maxWidth: 680, margin: "0 auto", padding: "1.5rem 1.25rem", paddingTop: 150 },
+    headerEyebrow: {
+        fontSize: 10,
+        fontWeight: 700,
+        letterSpacing: "0.16em",
+        textTransform: "uppercase",
+        color: "#aaa",
+        marginBottom: 6,
+    },
+    headerTitle: {
+        fontSize: 24,
+        fontWeight: 800,
+        letterSpacing: "-0.5px",
+        textTransform: "uppercase",
+        color: "#0a0a0a",
+        lineHeight: 1,
+        margin: 0,
+    },
+    headerSubtitle: {
+        fontSize: 12,
+        color: "#888",
+        marginTop: 8,
+        letterSpacing: "0.04em",
+    },
+    headerBadge: { display: "none" },
+    body: { maxWidth: 680, margin: "0 auto", padding: "1.5rem 1.25rem", paddingTop: 50 },
     section: { marginBottom: "2rem" },
     sectionLabel: { fontSize: 11, fontWeight: 600, color: "#6B6B6B", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: 6 },
     sectionCount: { background: "#E8E8E8", borderRadius: 10, padding: "1px 6px", fontSize: 10, fontWeight: 600, color: "#6B6B6B", letterSpacing: 0, textTransform: "none" },
@@ -191,6 +211,7 @@ export default function AdminDashboard() {
     return (
         <>
             <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         @media (max-width: 480px) {
           .img-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)) !important; }
           .footer-inner { flex-direction: column; }
@@ -225,15 +246,16 @@ export default function AdminDashboard() {
                 ))}
             </div>
 
-            <div style={styles.root}>
-                {/* Sticky header */}
+            <div style={{ ...styles.root, paddingLeft: 50, paddingRight: 50 }}>
+                {/* Header */}
                 <div style={styles.header}>
-                    <p style={styles.headerTitle}>Dashboard Images</p>
-                    {hasContent && (
-                        <span style={styles.headerBadge}>
-                            {totalImages} {totalImages === 1 ? "image" : "images"}
-                        </span>
-                    )}
+                    <div>
+                        <div style={styles.headerEyebrow}>Media</div>
+                        <h1 style={styles.headerTitle}>Dashboard Images</h1>
+                        <p style={styles.headerSubtitle}>
+                            {totalImages} {totalImages === 1 ? "image" : "images"} total
+                        </p>
+                    </div>
                 </div>
 
                 {hasContent ? (
@@ -310,7 +332,10 @@ export default function AdminDashboard() {
                                     onKeyDown={(e) => e.key === "Enter" && inputRef.current.click()}
                                     aria-label="Upload images"
                                 >
-                                    <span style={styles.dropzoneIcon}>{isDragging ? "📂" : "🖼️"}</span>
+                                    <span style={styles.dropzoneIcon}>{isDragging ?
+                                        <FeatherIcon icon="upload" size={50} /> : <FeatherIcon icon="image" size={50} />
+
+                                    }</span>
                                     <p style={styles.dropzoneText}>
                                         Drag & drop, or <span style={styles.dropzoneStrong}>browse files</span>
                                     </p>
